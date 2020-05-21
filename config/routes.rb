@@ -3,4 +3,6 @@ Rails.application.routes.draw do
   get '/', to: 'status#index'
 
   jsonapi_resources :leads
+  jsonapi_resources :notes
+  jsonapi_resources :users, only: [:create]
 end

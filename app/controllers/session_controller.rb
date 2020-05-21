@@ -4,44 +4,32 @@ class SessionController < ApplicationController
   TWO_HOURS = 2 * 3600
 
   def create
-    email = params["email"]
-    password = params["password"]
+    user = User.find_by!(email: params['email'])
+    raise if BCrypt::Password.new(user.password_digest) != params['password']
 
-    begin
-      user = User.find_by!(email: email)
+    render json: { token: encrypt_user_data(user) }
+  rescue
+    render status: :unauthorized, json: { errors: [unauthorized_error_details] }
+  end
 
-      if BCrypt::Password.new(user.password_digest) == password
-        user_data = { id: user.id, username: user.username, email: user.email }
-        payload = {
-          data: user_data,
-          subscriber: user.id,
-          expiration: Time.now + TWO_HOURS
-        }
+  private
 
-        token = JWT.encode(payload, JWT_SECRET, "HS512")
+  def encrypt_user_data(user)
+    user_data = { id: user.id, username: user.username, email: user.email }
+    payload = {
+      data: user_data,
+      subscriber: user.id,
+      expiration: Time.now + TWO_HOURS
+    }
 
-        render json: { token: token }
-      else
-        render status: :unauthorized, json: {
-          errors: [
-            {
-              status: 401,
-              title: 'unauthorized',
-              detail: 'Error logging in'
-            }
-          ]
-        }
-      end
-    rescue
-      render status: :unauthorized, json: {
-        errors: [
-          {
-            status: 401,
-            title: 'unauthorized',
-            detail: 'Error logging in'
-          }
-        ]
-      }
-    end
+    JWT.encode(payload, JWT_SECRET, 'HS512')
+  end
+
+  def unauthorized_error_details
+    {
+      status: 401,
+      title: 'unauthorized',
+      detail: 'Error logging in'
+    }
   end
 end

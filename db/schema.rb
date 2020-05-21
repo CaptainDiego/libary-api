@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_15_000635) do
+ActiveRecord::Schema.define(version: 2020_05_21_224029) do
 
   create_table "leads", force: :cascade do |t|
     t.string "first"
@@ -20,4 +20,22 @@ ActiveRecord::Schema.define(version: 2020_05_15_000635) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.string "user"
+    t.text "body"
+    t.integer "lead_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lead_id"], name: "index_notes_on_lead_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.string "username"
+    t.string "password_digest"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "notes", "leads"
 end

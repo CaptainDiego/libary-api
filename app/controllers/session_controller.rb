@@ -18,7 +18,7 @@ class SessionController < ApplicationController
     user_data = { id: user.id, username: user.username, email: user.email }
     payload = {
       data: user_data,
-      subscriber: user.id,
+      user_id: user.id,
       expiration: Time.now + TWO_HOURS
     }
 

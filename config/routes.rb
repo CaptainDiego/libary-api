@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   post '/session', to: 'session#create'
   get 'users/current', to: 'users#show_current'
 
-  jsonapi_resources :leads
-  jsonapi_resources :notes
-  jsonapi_resources :users, only: [:create]
+  resources :leads
+  resources :notes
+  resources :users, only: [:create]
 end

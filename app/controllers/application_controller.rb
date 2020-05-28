@@ -1,4 +1,4 @@
-class ApplicationController < JSONAPI::ResourceControllerMetal
+class ApplicationController < ActionController::API
   def authenticate
       authenticate_or_request_with_http_token do |token, _options|
         verified_token = JWT.decode(

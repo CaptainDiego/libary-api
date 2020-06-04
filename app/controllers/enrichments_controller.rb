@@ -6,12 +6,13 @@ class EnrichmentsController < ApplicationController
   end
 
   def create
-    lead = Lead.find(params['lead_id'])
-
-    clearbit_result = LeadEnrichmentService.new(lead.email).fetch_clearbit_details
-
-    enrichment = Enrichment.create(lead: lead, clearbit_result: clearbit_result)
-
+    enrichment = Enrichment::Create.new(lead_id).execute
     render json: EnrichmentSerializer.new(enrichment).serialized_json
+  end
+
+  private
+
+  def lead_id
+    params['lead_id']
   end
 end

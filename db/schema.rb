@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_21_224029) do
+ActiveRecord::Schema.define(version: 2020_06_02_011113) do
+
+  create_table "enrichments", force: :cascade do |t|
+    t.json "clearbit_result"
+    t.integer "lead_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lead_id"], name: "index_enrichments_on_lead_id"
+  end
 
   create_table "leads", force: :cascade do |t|
     t.string "first"
@@ -37,5 +45,6 @@ ActiveRecord::Schema.define(version: 2020_05_21_224029) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "enrichments", "leads"
   add_foreign_key "notes", "leads"
 end

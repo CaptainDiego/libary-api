@@ -1,4 +1,4 @@
-class Enrichment::Create 
+class Enrichment::Create
   def initialize(lead_id)
     @lead = Lead.find(lead_id)
   end

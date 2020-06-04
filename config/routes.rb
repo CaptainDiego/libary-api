@@ -7,5 +7,5 @@ Rails.application.routes.draw do
   resources :leads
   resources :notes
   resources :users, only: [:create]
-  resources :enrichments, only: [:create]
+  resources :enrichments, only: [:show, :create]
 end

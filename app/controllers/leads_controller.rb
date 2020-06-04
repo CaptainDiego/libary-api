@@ -8,6 +8,11 @@ class LeadsController < ApplicationController
     render json: LeadSerializer.new(lead).serialized_json
   end
 
+  def show
+    lead = Lead.find(params['id'])
+    render json: LeadSerializer.new(lead).serialized_json
+  end
+
   def update
     
   end
